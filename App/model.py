@@ -39,6 +39,10 @@ los mismos.
 
 # Construccion de modelos
 
+def initCatalog():
+    catalogo={}
+    return catalogo
+    
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos

@@ -34,10 +34,18 @@ se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
 
+def initCatalog():
+    return controller.initCatalog()
+
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Encontrar puntos de interconexión aérea")
+    print("3- Encontrar clústeres de tráfico aéreo")
+    print("4- Encontrar la ruta más corta entre ciudades")
+    print("5- Utilizar las millas de viajero")
+    print("6- Cuantificar el efecto de un aeropuerto cerrado")
+    print("0- Salir")
 
 catalog = None
 
@@ -49,7 +57,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-
+        catalog=initCatalog()
     elif int(inputs[0]) == 2:
         pass
 
