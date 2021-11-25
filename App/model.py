@@ -54,6 +54,7 @@ def initCatalog():
 def addAirport(catalogo,airport):
     ap=airport["IATA"]
     gr.insertVertex(catalogo["routes"],ap)
+    mp.put(catalogo["airports"],airport[""],airport)
 
 def addRoute(catalogo,route):
     airport=route["Departure"]
@@ -88,7 +89,9 @@ def sizes(catalogo):
     routesSize=gr.numVertices(catalogo["routes"])
     routesDiSize=gr.numVertices(catalogo["routesDi"])
     citiesSize=mp.size(catalogo["cities"])
-    return routesSize,routesDiSize,citiesSize
+    primer=me.getValue(mp.get(catalogo["airports"],"0"))
+    ultima=lt.firstElement(me.getValue(mp.get(catalogo["cities"],lt.lastElement(mp.keySet(catalogo["cities"])))))
+    return routesSize,routesDiSize,citiesSize,primer,ultima
 
 # Funciones para creacion de datos
 

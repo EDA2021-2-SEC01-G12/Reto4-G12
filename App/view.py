@@ -64,13 +64,18 @@ while True:
         controller.addAirport(catalogo)
         controller.addRoute(catalogo)
         controller.addCiudad(catalogo)
-        rs,rds,cs=sizes(catalogo)
-        print("\nEl total de aeropuertos disponibles es de "+str(rs)+" aeropuertos")
-        print("El total de aeropuertos que cuentan con rutas de ida y vuelta con otros aeropuertos es de "+str(rds)+" aeropuertos")
-        print("El total de ciudades registradas es de "+str(cs)+" ciudades\n")
+        rs,rds,cs,primer,ultima=sizes(catalogo)
+        print("\nTotal de aeropuertos disponibles: "+str(rs))
+        print("Total de aeropuertos que cuentan con rutas de ida y vuelta con otros aeropuertos: "+str(rds))
+        print("Total de ciudades registradas: "+str(cs)+"\n_____________________________________________________________________________________________________")
+        nombreAeropuerto,cod,ciudad,pais,lat,lon=primer["Name"],primer["IATA"],primer["City"],primer["Country"],primer["Latitude"],primer["Longitude"]
+        city,poblacion,lati,long=ultima["city"],ultima["population"],ultima["lat"],ultima["lng"]
+        print("\nEl primer aeropuerto registrado es el "+nombreAeropuerto+" ("+cod+"):\n")
+        print("Ciudad: "+ciudad+"\nPais: "+pais+"\nLatitud: "+lat+"\nLongitud: "+lon+"\n_____________________________________________________________________________________________________")
+        print("\nLa ultima ciudad registrada es "+city+":\n")
+        print("Poblacion: "+poblacion+"\nLatitud: "+lati+"\nLongitud: "+long+"\n_____________________________________________________________________________________________________")
     elif int(inputs[0]) == 2:
         pass
-
     else:
         sys.exit(0)
 sys.exit(0)
