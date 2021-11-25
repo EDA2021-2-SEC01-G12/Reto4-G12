@@ -37,6 +37,9 @@ operación solicitada
 def initCatalog():
     return controller.initCatalog()
 
+def sizes(catalogo):
+    return controller.sizes(catalogo)
+
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
@@ -47,7 +50,7 @@ def printMenu():
     print("6- Cuantificar el efecto de un aeropuerto cerrado")
     print("0- Salir")
 
-catalog = None
+catalogo = None
 
 """
 Menu principal
@@ -57,7 +60,14 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        catalog=initCatalog()
+        catalogo=initCatalog()
+        controller.addAirport(catalogo)
+        controller.addRoute(catalogo)
+        controller.addCiudad(catalogo)
+        rs,rds,cs=sizes(catalogo)
+        print("\nEl total de aeropuertos disponibles es de "+str(rs)+" aeropuertos")
+        print("El total de aeropuertos que cuentan con rutas de ida y vuelta con otros aeropuertos es de "+str(rds)+" aeropuertos")
+        print("El total de ciudades registradas es de "+str(cs)+" ciudades\n")
     elif int(inputs[0]) == 2:
         pass
 
