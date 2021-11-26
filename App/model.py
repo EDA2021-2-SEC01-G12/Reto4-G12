@@ -89,9 +89,15 @@ def sizes(catalogo):
     routesSize=gr.numVertices(catalogo["routes"])
     routesDiSize=gr.numVertices(catalogo["routesDi"])
     citiesSize=mp.size(catalogo["cities"])
-    primer=me.getValue(mp.get(catalogo["airports"],"0"))
-    ultima=lt.firstElement(me.getValue(mp.get(catalogo["cities"],lt.lastElement(mp.keySet(catalogo["cities"])))))
+    primer=me.getValue(mp.get(catalogo["airports"],"primer"))
+    ultima=me.getValue(mp.get(catalogo["cities"],"ultimo"))
     return routesSize,routesDiSize,citiesSize,primer,ultima
+
+def primerCargado(catalogo,ai):
+    mp.put(catalogo["airports"],"primer",ai)
+
+def ultimo(catalogo,ct):
+    mp.put(catalogo["cities"],"ultimo",ct)
 
 # Funciones para creacion de datos
 

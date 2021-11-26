@@ -39,7 +39,11 @@ def initCatalog():
 def addAirport(catalogo):
     airportsFile = cf.data_dir + "airports_full.csv"
     airports = csv.DictReader(open(airportsFile, encoding="utf-8"),delimiter=",")
+    primer=None
     for ai in airports:
+        if primer==None:
+            model.primerCargado(catalogo,ai)
+            primer=ai
         model.addAirport(catalogo,ai)
 
 def addRoute(catalogo):
@@ -52,12 +56,16 @@ def addRoute(catalogo):
 def addCiudad(catalogo):
     citiesFile = cf.data_dir + "worldcities.csv"
     cities = csv.DictReader(open(citiesFile, encoding="utf-8"),delimiter=",")
+    contador=0
     for ct in cities:
         model.addCity(catalogo,ct)
+        contador+=1
+        if contador==41001:
+            model.ultimo(catalogo,ct)
+
+def sizes(catalogo):
+    return model.sizes(catalogo)
 
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
-
-def sizes(catalogo):
-    return model.sizes(catalogo)
