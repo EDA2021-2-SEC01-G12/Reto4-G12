@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from App.model import fuertementeConectados
 import config as cf
 import model
 import csv
@@ -37,7 +38,7 @@ def initCatalog():
 # Funciones para la carga de datos
 
 def addAirport(catalogo):
-    airportsFile = cf.data_dir + "airports_full.csv"
+    airportsFile = cf.data_dir + "airports-utf8-small.csv"
     airports = csv.DictReader(open(airportsFile, encoding="utf-8"),delimiter=",")
     primer=None
     for ai in airports:
@@ -47,14 +48,14 @@ def addAirport(catalogo):
         model.addAirport(catalogo,ai)
 
 def addRoute(catalogo):
-    routesFile = cf.data_dir + "routes_full.csv"
+    routesFile = cf.data_dir + "routes-utf8-small.csv"
     routes = csv.DictReader(open(routesFile, encoding="utf-8"),delimiter=",")
     for rt in routes:
         model.addRoute(catalogo,rt)
         model.addRouteDi(catalogo,rt)
 
 def addCiudad(catalogo):
-    citiesFile = cf.data_dir + "worldcities.csv"
+    citiesFile = cf.data_dir + "worldcities-utf8.csv"
     cities = csv.DictReader(open(citiesFile, encoding="utf-8"),delimiter=",")
     contador=0
     for ct in cities:
@@ -69,3 +70,9 @@ def sizes(catalogo):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+
+def interconectados(catalogo):
+    return model.interconectados(catalogo)
+
+def fuertementeConectados(catalogo,v1,v2):
+    return model.fuertementeConectados(catalogo,v1,v2)

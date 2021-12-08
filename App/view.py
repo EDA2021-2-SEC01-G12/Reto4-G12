@@ -25,7 +25,8 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+from DISClib.DataStructures import mapentry as me
+from DISClib.ADT import map as mp
 
 """
 La vista se encarga de la interacción con el usuario
@@ -39,6 +40,16 @@ def initCatalog():
 
 def sizes(catalogo):
     return controller.sizes(catalogo)
+
+def printInfo(lista):
+    i=1
+    while i!=6:
+        ae=lt.getElement(lista,i)
+        info=ae[2]
+        iata,nombre,ciudad,pais=info['IATA'],info['Name'],info['City'],info['Country']
+        print("\nNombre: "+nombre+"\nIATA: "+iata+"\nPais: "+pais+"\nCiudad: "+ciudad+"\n")
+        print("***********************************************************************************************")
+        i+=1
 
 def printMenu():
     print("Bienvenido")
@@ -66,7 +77,7 @@ while True:
         controller.addCiudad(catalogo)
         rs,rds,cs,primer,ultima=sizes(catalogo)
         print("\nTotal de aeropuertos disponibles: "+str(rs))
-        print("Total de aeropuertos que cuentan con rutas de ida y vuelta con otros aeropuertos: "+str(rds))
+        print("Total de rutas entre aeropuertos que cuentan con vuelos de ida y vuelta: "+str(rds))
         print("Total de ciudades registradas: "+str(cs)+"\n_____________________________________________________________________________________________________")
         nombreAeropuerto,cod,ciudad,pais,lat,lon=primer["Name"],primer["IATA"],primer["City"],primer["Country"],primer["Latitude"],primer["Longitude"]
         city,poblacion,lati,long=ultima["city"],ultima["population"],ultima["lat"],ultima["lng"]
@@ -75,7 +86,25 @@ while True:
         print("\nLa ultima ciudad registrada es "+city+":\n")
         print("Poblacion: "+poblacion+"\nLatitud: "+lati+"\nLongitud: "+long+"\n_____________________________________________________________________________________________________")
     elif int(inputs[0]) == 2:
-        pass
+        aeropuertos=controller.interconectados(catalogo)
+        num=aeropuertos[1]
+        lista=aeropuertos[0]
+        print("\nExisten "+str(num)+" aeropuertos interconectados\n")
+        print("***********************************************************************************************")
+        printInfo(lista)
+    elif int(inputs[0]) == 3:
+        v1=input("Ingrese el codigo IATA del aeropuerto 1:\n")
+        v2=input("Ingrese el codigo IATA del aeropuerto 2:\n")
+        componentes=controller.fuertementeConectados(catalogo,v1,v2)
+        numComponentes=componentes[0]
+        com=componentes[1]
+        print("\nExisten "+str(numComponentes)+" clusteres aereos")
+        if com==False:
+            print("\nLos aeropuertos "+componentes[2]+" y "+componentes[3]+" no pertenecen al mismo cluster\n")
+        else:
+            print("\nLos aeropuertos "+componentes[2]+" y "+componentes[3]+" pertenecen al mismo cluster\n")
+    elif int(inputs[0]) == 4:
+        print((catalogo['cities']))
     else:
         sys.exit(0)
 sys.exit(0)

@@ -32,6 +32,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.ADT import graph as gr
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Graphs import scc
 assert cf
 
 """
@@ -46,7 +47,7 @@ def initCatalog():
     catalogo["airports"]=mp.newMap(9076,maptype="PROBING",loadfactor=0.5)
     catalogo["routes"]=gr.newGraph(directed=True,size=92606)
     catalogo["routesDi"]=gr.newGraph(datastructure="ADJ_LIST",directed=False,size=92606)
-    catalogo["cities"]=mp.newMap(40002,loadfactor=8.0)
+    catalogo["cities"]=mp.newMap(41001,maptype="CHAINING",loadfactor=8.0)
     return catalogo
     
 # Funciones para agregar informacion al catalogo
@@ -54,7 +55,7 @@ def initCatalog():
 def addAirport(catalogo,airport):
     ap=airport["IATA"]
     gr.insertVertex(catalogo["routes"],ap)
-    mp.put(catalogo["airports"],airport[""],airport)
+    mp.put(catalogo["airports"],airport["IATA"],airport)
 
 def addRoute(catalogo,route):
     airport=route["Departure"]
@@ -82,12 +83,12 @@ def addCity(catalogo,ciudad):
         lt.addLast(ciudades,ciudad)
         mp.put(catalogo["cities"],ct,ciudades)
     else:
-        ciudades=me.getValue(mp.get(catalogo["cities"],ct))
-        lt.addLast(ciudades,ciudad) 
+        ciudades1=me.getValue(mp.get(catalogo["cities"],ct))
+        lt.addLast(ciudades1,ciudad)
 
 def sizes(catalogo):
     routesSize=gr.numVertices(catalogo["routes"])
-    routesDiSize=gr.numVertices(catalogo["routesDi"])
+    routesDiSize=gr.numEdges(catalogo["routesDi"])
     citiesSize=mp.size(catalogo["cities"])
     primer=me.getValue(mp.get(catalogo["airports"],"primer"))
     ultima=me.getValue(mp.get(catalogo["cities"],"ultimo"))
@@ -103,6 +104,31 @@ def ultimo(catalogo,ct):
 
 # Funciones de consulta
 
+def interconectados(catalogo):
+    aeropuertosInterconectados=gr.vertices(catalogo["routesDi"])
+    aeroConectados=lt.newList("ARRAY_LIST")
+    for aeropuerto in lt.iterator(aeropuertosInterconectados):
+        adyacentes=gr.adjacents(catalogo["routesDi"],aeropuerto)
+        num=lt.size(adyacentes)
+        info=me.getValue(mp.get(catalogo["airports"],aeropuerto))
+        lt.addLast(aeroConectados,(aeropuerto,num,info))
+    aeroConectados=sa.sort(aeroConectados,cmpInterconectados)
+    return aeroConectados,lt.size(aeroConectados)
+
+def fuertementeConectados(catalogo,v1,v2):
+    componentesConectados=scc.KosarajuSCC(catalogo["routes"])
+    conectados=scc.stronglyConnected(componentesConectados,v1,v2)
+    air1=(me.getValue(mp.get(catalogo["airports"],v1)))["Name"]
+    air2=(me.getValue(mp.get(catalogo["airports"],v2)))["Name"]
+    numScc=scc.connectedComponents(componentesConectados)
+    return numScc,conectados,air1,air2
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
+def cmpInterconectados(ap1,ap2):
+    return ap1[1]>ap2[1]
+
 # Funciones de ordenamiento
+
+#--------------------------------------------------------------------------------------------------
+''' '''
