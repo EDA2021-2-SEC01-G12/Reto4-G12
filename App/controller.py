@@ -76,3 +76,9 @@ def interconectados(catalogo):
 
 def fuertementeConectados(catalogo,v1,v2):
     return model.fuertementeConectados(catalogo,v1,v2)
+
+def millasUsuario(catalogo,millas,v1):
+    return model.millasUsuario(catalogo,millas,v1)
+
+def aeropuertoCerrado(catalogo,iata):
+    return model.aeropuertoCerrado(catalogo,iata)

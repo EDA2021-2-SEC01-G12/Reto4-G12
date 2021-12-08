@@ -33,6 +33,8 @@ from DISClib.ADT import graph as gr
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Graphs import scc
+from DISClib.Algorithms.Graphs import prim
+from DISClib.Algorithms.Graphs import dijsktra
 assert cf
 
 """
@@ -60,7 +62,7 @@ def addAirport(catalogo,airport):
 def addRoute(catalogo,route):
     airport=route["Departure"]
     destination=route["Destination"]
-    peso=route["distance_km"]
+    peso=float(route["distance_km"])
     gr.addEdge(catalogo["routes"],airport,destination,peso)
 
 def addRouteDi(catalogo,route):
@@ -123,10 +125,39 @@ def fuertementeConectados(catalogo,v1,v2):
     numScc=scc.connectedComponents(componentesConectados)
     return numScc,conectados,air1,air2
 
+def millasUsuario(catalogo,millas,v1):
+    mst=prim.PrimMST(catalogo["routes"])
+    rutaMinima=dijsktra.Dijkstra(catalogo["routes"],v1)
+    millas=millas*1.6
+    kmIda=millas/2
+    kmUsados=0
+    kmTot=0
+    keys=mp.keySet(mst['edgeTo'])
+    for a in lt.iterator(keys):
+        if a!=None:
+            a=me.getValue(mp.get(mst["edgeTo"],a))
+            kmTot+=a["weight"]
+    print(kmTot)
+    #while millasUsadas!=millasIda:
+
+def aeropuertoCerrado(catalogo,iata):
+    listaAdyacentes=gr.adjacents(catalogo["routes"],iata)
+    lista=lt.newList("ARRAY_LIST")
+    for aer in lt.iterator(listaAdyacentes):
+        info=me.getValue(mp.get(catalogo['airports'],aer))
+        tup=(aer,info)
+        if not lt.isPresent(lista,tup):
+            lt.addLast(lista,tup)
+    lista=sa.sort(lista,cmpIATA)
+    return lista
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def cmpInterconectados(ap1,ap2):
     return ap1[1]>ap2[1]
+
+def cmpIATA(ap1,ap2):
+    return ap1[0]<ap2[0]
 
 # Funciones de ordenamiento
 

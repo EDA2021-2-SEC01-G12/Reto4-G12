@@ -51,6 +51,46 @@ def printInfo(lista):
         print("***********************************************************************************************")
         i+=1
 
+def printInfo(lst,num1,num2,total):
+    if lt.size(lst)>=total:
+        i=num1
+        j=lt.size(lst)-num2
+        avi=True
+        while avi:
+            if i!=4:
+                avistamientoActual=lt.getElement(lst,i)
+                i+=1
+            else:
+                avistamientoActual=lt.getElement(lst,j)
+                j+=1
+                if j==lt.size(lst)+1:
+                    avi=False
+            fechaHora,ciudad,pais,duracion,forma,longitud,latitud=avistamientoActual['datetime'],avistamientoActual['city'].title(),avistamientoActual['country'].upper(),avistamientoActual['duration (seconds)'],avistamientoActual['shape'],avistamientoActual['longitude'],avistamientoActual['latitude']
+            if fechaHora=="":
+                fechaHora="Desconocidas"
+            if ciudad=="":
+                ciudad="Desconocida"
+            if pais=="":
+                pais="Desconocido"
+            if duracion=="":
+                duracion="Desconocida"
+            if forma=="":
+                forma="Forma desconocida"
+            print("- Fecha y hora del avistamiento: "+fechaHora+"\n- Pais: "+pais+"\n- Ciudad: "+ciudad+"\n- Duracion: "+duracion+" segundos\n- Forma: "+forma.title()+"\n- Longitud: "+str(longitud)+"\n- Latitud: "+str(latitud)+"\n_________________________________________________________________________________________________________________________\n")
+    else:
+        for avis in lt.iterator(lst):
+            fechaHora,ciudad,pais,duracion,forma,longitud,latitud=avis['datetime'],avis['city'].title(),avis['country'].upper(),avis['duration (seconds)'],avis['shape'],avis['longitude'],avis['latitude']
+            if fechaHora=="":
+                fechaHora="Desconocidas"
+            if ciudad=="":
+                ciudad="Desconocida"
+            if pais=="":
+                pais="Desconocido"
+            if duracion=="":
+                duracion="Desconocida"
+            if forma=="":
+                forma="Forma desconocida"
+
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
@@ -105,6 +145,14 @@ while True:
             print("\nLos aeropuertos "+componentes[2]+" y "+componentes[3]+" pertenecen al mismo cluster\n")
     elif int(inputs[0]) == 4:
         print((catalogo['cities']))
+    elif int(inputs[0]) == 5:
+        millas=int(input("Ingrese las millas disponibles: \n"))
+        ciudad=input("Ingrese la ciudad de origen:\n")
+        controller.millasUsuario(catalogo,millas,ciudad)
+    elif int(inputs[0]) == 6:
+        aeropuerto=input('Ingrese el codigo IATA del aeropuerto: \n')
+        lista=controller.aeropuertoCerrado(catalogo,aeropuerto)
+        print(lista)
     else:
         sys.exit(0)
 sys.exit(0)
