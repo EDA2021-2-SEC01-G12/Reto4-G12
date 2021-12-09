@@ -160,7 +160,7 @@ while True:
                 else:
                     ciudad1=lt.getElement(ciudad1,1)
                 origen=True
-                aerosOrigen=controller.buscarAerosCiudad(catalogo,ciudad)
+                aerosOrigen=controller.buscarAerosCiudad(catalogo,ciudad1)
                 if lt.size(aerosOrigen)>1:
                     print("\nSe encontaron "+str(lt.size(aerosOrigen))+" aeropuertos en "+ciudadOrigen+"\n")
                     aeros={}
@@ -186,7 +186,7 @@ while True:
                 else:
                     ciudad2=lt.getElement(ciudad2,1)
                 destino=True
-                aerosDestino=controller.buscarAerosCiudad(catalogo,ciudad)
+                aerosDestino=controller.buscarAerosCiudad(catalogo,ciudad2)
                 if lt.size(aerosDestino)>1:
                     print("\nSe encontaron "+str(lt.size(aerosDestino))+" aeropuertos en "+ciudadDestino+"\n")
                     aeros2={}
@@ -200,8 +200,8 @@ while True:
                 print("La ciudad ingresada no existe")
         if ciudad1!=None and ciudad2!=None:
             ruta=controller.rutaMinimaCiudades(catalogo,ciudad1,ciudad2)
-        print("Aeropuerto de salida: "+aerosOrigen["Name"]+"\n\nCiudad: "+aerosOrigen["City"]+"\nPais: "+aerosOrigen["Country"]+"\nLongitud: "+aerosOrigen["Longitude"]+"\nLatitud: "+aerosOrigen["Latitude"]+"\nIATA: "+aerosOrigen["IATA"])
-        print("Aeropuerto de llegada: "+aerosDestino["Name"]+"\n\nCiudad: "+aerosDestino["City"]+"\nPais: "+aerosDestino["Country"]+"\nLongitud: "+aerosDestino["Longitude"]+"\nLatitud: "+aerosDestino["Latitude"]+"\nIATA: "+aerosDestino["IATA"])
+        print("\nAeropuerto de salida: "+aerosOrigen["Name"]+"\n\nCiudad: "+aerosOrigen["City"]+"\nPais: "+aerosOrigen["Country"]+"\nLongitud: "+aerosOrigen["Longitude"]+"\nLatitud: "+aerosOrigen["Latitude"]+"\nIATA: "+aerosOrigen["IATA"])
+        print("\nAeropuerto de llegada: "+aerosDestino["Name"]+"\n\nCiudad: "+aerosDestino["City"]+"\nPais: "+aerosDestino["Country"]+"\nLongitud: "+aerosDestino["Longitude"]+"\nLatitud: "+aerosDestino["Latitude"]+"\nIATA: "+aerosDestino["IATA"])
     elif int(inputs[0]) == 5:
         millas=int(input("Ingrese las millas disponibles: \n"))
         ciudad=input("Ingrese la ciudad de origen:\n")
