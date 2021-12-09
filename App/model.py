@@ -170,6 +170,10 @@ def buscarCiudades(catalogo,ciudad):
     else:
         return me.getValue(ciudades)
 
+def buscarAerosCiudad(catalogo,ciudad):
+    aeros=me.getValue(mp.get(catalogo["airportsCity"],ciudad))
+    return aeros
+
 def rutaMinimaCiudades(catalogo,ciudad1,ciudad2):
     aeros1=me.getValue(mp.get(catalogo["airportsCity"],ciudad1['city']))
     aeros2=me.getValue(mp.get(catalogo["airportsCity"],ciudad2['city']))

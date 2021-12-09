@@ -87,5 +87,8 @@ def aeropuertoCerrado(catalogo,iata):
 def buscarCiudades(catalogo,ciudad):
     return model.buscarCiudades(catalogo,ciudad)
 
+def buscarAerosCiudad(catalogo,ciudad):
+    return model.buscarAerosCiudad(catalogo,ciudad)
+
 def rutaMinimaCiudades(catalogo,ciudad1,ciudad2):
     return model.rutaMinimaCiudades(catalogo,ciudad1,ciudad2)

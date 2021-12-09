@@ -75,14 +75,21 @@ def printInfo(lst,num1,num2,total):
             iata,nombre,ciudad,pais=info['IATA'],info['Name'],info['City'],info['Country']
             print("Nombre: "+nombre+"\nIATA: "+iata+"\nPais: "+pais+"\nCiudad: "+ciudad+"\n_____________________________________________________________________________________________________\n")
 
-def printCiudad(lista,ciudades):
-    i=1
-    for c in lt.iterator(lista):
-        ciudad,pais,long,lat,poblacion=c["city"],c["country"],c["lng"],c["lat"],c["population"]
-        print("_____________________________________________________________________________________________________\n")
-        print(str(i)+".\nNombre: "+ciudad+"\nPais: "+pais+"\nPoblacion: "+poblacion+"\nLongitud: "+long+"\nLatitud: "+lat+"\n_____________________________________________________________________________________________________\n")
-        ciudades[i]=c
-        i+=1
+def printCiudad(lista,ciudades,tipo):
+    if tipo=="city":
+        i=1
+        for c in lt.iterator(lista):
+            ciudad,pais,long,lat,poblacion=c["city"],c["country"],c["lng"],c["lat"],c["population"]
+            print(str(i)+".\nNombre: "+ciudad+"\nPais: "+pais+"\nPoblacion: "+poblacion+"\nLongitud: "+long+"\nLatitud: "+lat+"\n_____________________________________________________________________________________________________\n")
+            ciudades[i]=c
+            i+=1
+    else:
+        i=1
+        for c in lt.iterator(lista):
+            ciudad,pais,long,lat,nombre,iata=c["City"],c["Country"],c["Longitude"],c["Latitude"],c["Name"],c["IATA"]
+            print(str(i)+".\nNombre: "+nombre+"\nCiudad: "+ciudad+"\nPais: "+pais+"\nIATA: "+iata+"\nLongitud: "+long+"\nLatitud: "+lat+"\n_____________________________________________________________________________________________________\n")
+            ciudades[i]=c
+            i+=1
 
 def printMenu():
     print("Bienvenido")
@@ -144,14 +151,25 @@ while True:
             ciudad1=controller.buscarCiudades(catalogo,ciudadOrigen)
             if ciudad1!=None:
                 if lt.size(ciudad1)>1:
-                    print("\nSe encontaron "+str(lt.size(ciudad1))+" ciudades con el nombre de "+ciudadOrigen+", seleccione cual desea consultar:\n")
+                    print("\nSe encontaron "+str(lt.size(ciudad1))+" ciudades con el nombre de "+ciudadOrigen+"\n")
                     ciudadesOrigen={}
-                    printCiudad(ciudad1,ciudadesOrigen)
-                    ciudad1Opcion=int(input("\n"))
+                    print("_____________________________________________________________________________________________________\n")
+                    printCiudad(ciudad1,ciudadesOrigen,"city")
+                    ciudad1Opcion=int(input("Seleccione cual desea consultar:\n"))
                     ciudad1=ciudadesOrigen[ciudad1Opcion]
                 else:
                     ciudad1=lt.getElement(ciudad1,1)
                 origen=True
+                aerosOrigen=controller.buscarAerosCiudad(catalogo,ciudad)
+                if lt.size(aerosOrigen)>1:
+                    print("\nSe encontaron "+str(lt.size(aerosOrigen))+" aeropuertos en "+ciudadOrigen+"\n")
+                    aeros={}
+                    print("_____________________________________________________________________________________________________\n")
+                    printCiudad(aerosOrigen,aeros,"aero")
+                    aero1Opcion=int(input("Seleccione cual desea consultar:\n"))
+                    aerosOrigen=aeros[aero1Opcion]
+                else:
+                    aerosOrigen=lt.getElement(aerosOrigen,1)
             else:
                 print("La ciudad ingresada no existe")
         while not destino:
@@ -161,17 +179,29 @@ while True:
                 if lt.size(ciudad2)>1:
                     ciudadesDestino={}
                     print("\nSe encontaron "+str(lt.size(ciudad2))+" ciudades con el nombre de "+ciudadDestino+", seleccione cual desea consultar:\n")
-                    printCiudad(ciudad2,ciudadesDestino)
-                    ciudad2Opcion=int(input("\n"))
+                    print("_____________________________________________________________________________________________________\n")
+                    printCiudad(ciudad2,ciudadesDestino,"city")
+                    ciudad2Opcion=int(input("Seleccione cual desea consultar:\n"))
                     ciudad2=ciudadesDestino[ciudad2Opcion]
                 else:
                     ciudad2=lt.getElement(ciudad2,1)
                 destino=True
+                aerosDestino=controller.buscarAerosCiudad(catalogo,ciudad)
+                if lt.size(aerosDestino)>1:
+                    print("\nSe encontaron "+str(lt.size(aerosDestino))+" aeropuertos en "+ciudadDestino+"\n")
+                    aeros2={}
+                    print("_____________________________________________________________________________________________________\n")
+                    printCiudad(aerosDestino,aeros2,"aero")
+                    aero2Opcion=int(input("Seleccione cual desea consultar:\n"))
+                    aerosDestino=aeros[aero2Opcion]
+                else:
+                    aerosDestino=lt.getElement(aerosDestino,1)
             else:
                 print("La ciudad ingresada no existe")
         if ciudad1!=None and ciudad2!=None:
             ruta=controller.rutaMinimaCiudades(catalogo,ciudad1,ciudad2)
-        print(ruta)
+        print("Aeropuerto de salida: "+aerosOrigen["Name"]+"\n\nCiudad: "+aerosOrigen["City"]+"\nPais: "+aerosOrigen["Country"]+"\nLongitud: "+aerosOrigen["Longitude"]+"\nLatitud: "+aerosOrigen["Latitude"]+"\nIATA: "+aerosOrigen["IATA"])
+        print("Aeropuerto de llegada: "+aerosDestino["Name"]+"\n\nCiudad: "+aerosDestino["City"]+"\nPais: "+aerosDestino["Country"]+"\nLongitud: "+aerosDestino["Longitude"]+"\nLatitud: "+aerosDestino["Latitude"]+"\nIATA: "+aerosDestino["IATA"])
     elif int(inputs[0]) == 5:
         millas=int(input("Ingrese las millas disponibles: \n"))
         ciudad=input("Ingrese la ciudad de origen:\n")
