@@ -46,6 +46,7 @@ def addAirport(catalogo):
             model.primerCargado(catalogo,ai)
             primer=ai
         model.addAirport(catalogo,ai)
+        model.addAirCity(catalogo,ai)
 
 def addRoute(catalogo):
     routesFile = cf.data_dir + "routes-utf8-small.csv"
@@ -82,3 +83,9 @@ def millasUsuario(catalogo,millas,v1):
 
 def aeropuertoCerrado(catalogo,iata):
     return model.aeropuertoCerrado(catalogo,iata)
+
+def buscarCiudades(catalogo,ciudad):
+    return model.buscarCiudades(catalogo,ciudad)
+
+def rutaMinimaCiudades(catalogo,ciudad1,ciudad2):
+    return model.rutaMinimaCiudades(catalogo,ciudad1,ciudad2)

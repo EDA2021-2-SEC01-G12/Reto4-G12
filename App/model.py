@@ -45,8 +45,9 @@ los mismos.
 # Construccion de modelos
 
 def initCatalog():
-    catalogo={"airports":None,"routes":None,"routesDi":None,"cities":None}
+    catalogo={"airports":None,"routes":None,"routesDi":None,"cities":None,"airportsCity":None}
     catalogo["airports"]=mp.newMap(9076,maptype="PROBING",loadfactor=0.5)
+    catalogo['airportsCity']=mp.newMap(41001,maptype="CHAINING",loadfactor=8.0)
     catalogo["routes"]=gr.newGraph(directed=True,size=92606)
     catalogo["routesDi"]=gr.newGraph(datastructure="ADJ_LIST",directed=False,size=92606)
     catalogo["cities"]=mp.newMap(41001,maptype="CHAINING",loadfactor=8.0)
@@ -87,6 +88,16 @@ def addCity(catalogo,ciudad):
     else:
         ciudades1=me.getValue(mp.get(catalogo["cities"],ct))
         lt.addLast(ciudades1,ciudad)
+
+def addAirCity(catalogo,airport):
+    ct=airport["City"]
+    if not mp.contains(catalogo["airportsCity"],ct):
+        ciudades=lt.newList("SINGLE_LINKED")
+        lt.addLast(ciudades,airport)
+        mp.put(catalogo["airportsCity"],ct,ciudades)
+    else:
+        ciudades1=me.getValue(mp.get(catalogo["airportsCity"],ct))
+        lt.addLast(ciudades1,airport)
 
 def sizes(catalogo):
     routesSize=gr.numVertices(catalogo["routes"])
@@ -142,6 +153,7 @@ def millasUsuario(catalogo,millas,v1):
 
 def aeropuertoCerrado(catalogo,iata):
     listaAdyacentes=gr.adjacents(catalogo["routes"],iata)
+    nombre=me.getValue(mp.get(catalogo["airports"],iata))["Name"]
     lista=lt.newList("ARRAY_LIST")
     for aer in lt.iterator(listaAdyacentes):
         info=me.getValue(mp.get(catalogo['airports'],aer))
@@ -149,7 +161,22 @@ def aeropuertoCerrado(catalogo,iata):
         if not lt.isPresent(lista,tup):
             lt.addLast(lista,tup)
     lista=sa.sort(lista,cmpIATA)
-    return lista
+    return lista,nombre
+
+def buscarCiudades(catalogo,ciudad):
+    ciudades=mp.get(catalogo["cities"],ciudad)
+    if ciudades==None:
+        return None
+    else:
+        return me.getValue(ciudades)
+
+def rutaMinimaCiudades(catalogo,ciudad1,ciudad2):
+    aeros1=me.getValue(mp.get(catalogo["airportsCity"],ciudad1['city']))
+    aeros2=me.getValue(mp.get(catalogo["airportsCity"],ciudad2['city']))
+    aero1=lt.getElement(aeros1,1)['IATA']
+    aero2=lt.getElement(aeros2,1)['IATA']
+    rutaMinima=dijsktra.Dijkstra(catalogo["routes"],aero1)
+    return rutaMinima
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
